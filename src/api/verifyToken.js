@@ -17,6 +17,8 @@ function debugToken(userToken, appToken) {
 }
 module.exports = function verify(userStatus) {
     return accessToken()
+        .then(function (token) { return debugToken(userStatus.authResponse.accessToken, token); })
+        .catch(function () { return accessToken(false); })
         .then(function (token) { return debugToken(userStatus.authResponse.accessToken, token); });
 };
 //# sourceMappingURL=verifyToken.js.map
