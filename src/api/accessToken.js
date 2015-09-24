@@ -1,6 +1,7 @@
 var request = require('request');
 var settings = require('./settings');
 var logger = require('ls-logger');
+var storedToken = '';
 function authCallback(result) {
     try {
         var errorObject = JSON.parse(result);
@@ -15,7 +16,10 @@ function authCallback(result) {
         return split[1];
     }
 }
-module.exports = function tokenRequest() {
+module.exports = function tokenRequest(usedStoredToken) {
+    if (usedStoredToken === void 0) { usedStoredToken = true; }
+    if (usedStoredToken && storedToken.length > 0)
+        return Promise.resolve(storedToken);
     var options = {
         client_id: settings.getClientId(),
         client_secret: settings.getSecret(),
@@ -29,6 +33,7 @@ module.exports = function tokenRequest() {
             var token = authCallback(body);
             if (token == null)
                 return reject('Failed to generate auth token');
+            storedToken = token;
             resolve(token);
         });
     });

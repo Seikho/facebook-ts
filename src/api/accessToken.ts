@@ -3,8 +3,10 @@ import * as settings from './settings';
 import * as Types from '../../index.d.ts';
  
 var logger = require('ls-logger');
+var storedToken: string = '';
 
-export = function tokenRequest(): Promise<string> {
+export = function tokenRequest(usedStoredToken = true): Promise<string> {
+    if (usedStoredToken && storedToken.length > 0) return Promise.resolve(storedToken);   
     var options = {
         client_id: settings.getClientId(),
         client_secret: settings.getSecret(),
@@ -18,6 +20,7 @@ export = function tokenRequest(): Promise<string> {
 
                 var token = authCallback(body);
                 if (token == null) return reject('Failed to generate auth token');
+                storedToken = token;
                 resolve(token);
             });
     })
