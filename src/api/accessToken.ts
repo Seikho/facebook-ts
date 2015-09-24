@@ -1,12 +1,11 @@
 import request = require('request');
 import * as settings from './settings';
 import * as Types from '../../index.d.ts';
- 
-var logger = require('ls-logger');
+
 var storedToken: string = '';
 
 export = function tokenRequest(usedStoredToken = true): Promise<string> {
-    if (usedStoredToken && storedToken.length > 0) return Promise.resolve(storedToken);   
+    if (usedStoredToken && storedToken.length > 0) return Promise.resolve(storedToken);
     var options = {
         client_id: settings.getClientId(),
         client_secret: settings.getSecret(),
@@ -19,23 +18,23 @@ export = function tokenRequest(usedStoredToken = true): Promise<string> {
                 if (error) return reject(error);
 
                 var token = authCallback(body);
-                if (token == null) return reject('Failed to generate auth token');
-                storedToken = token;
-                resolve(token);
+                
+                if (token instanceof Error) return reject(token.message);
+                storedToken = <string>token;
+                resolve(<string>token);
             });
     })
 
     return tokenPromise;
 }
 
-function authCallback(result: string) {
+function authCallback(result: string): string|Error {
     try {
         var errorObject = JSON.parse(result);
         if (!!errorObject.error) {
-            logger.error(`Failed to generate Application Auth Token: ${errorObject.error.message}`);
-            return null;
+            return new Error(`Failed to generate Application Auth Token: ${errorObject.error.message}`);
         }
-        logger.error(`Failed to generate Application Auth Token: Unexpected error: ${errorObject}`);
+        return new Error(`Failed to generate Application Auth Token: Unexpected error: ${errorObject}`);
     }
     catch (ex) {
         var split = result.split('=');

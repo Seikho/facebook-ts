@@ -1,15 +1,13 @@
 var request = require('request');
 var settings = require('./settings');
-var logger = require('ls-logger');
 var storedToken = '';
 function authCallback(result) {
     try {
         var errorObject = JSON.parse(result);
         if (!!errorObject.error) {
-            logger.error("Failed to generate Application Auth Token: " + errorObject.error.message);
-            return null;
+            return new Error("Failed to generate Application Auth Token: " + errorObject.error.message);
         }
-        logger.error("Failed to generate Application Auth Token: Unexpected error: " + errorObject);
+        return new Error("Failed to generate Application Auth Token: Unexpected error: " + errorObject);
     }
     catch (ex) {
         var split = result.split('=');
@@ -31,8 +29,8 @@ module.exports = function tokenRequest(usedStoredToken) {
             if (error)
                 return reject(error);
             var token = authCallback(body);
-            if (token == null)
-                return reject('Failed to generate auth token');
+            if (token instanceof Error)
+                return reject(token.message);
             storedToken = token;
             resolve(token);
         });
