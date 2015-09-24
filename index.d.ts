@@ -1,8 +1,7 @@
-export function getLoginStatus(callback: LoginCallback): void;
-export function getAccessToken(): string;
-export function init(options: Options): void;
-export function login(callback: LoginCallback): void;
-export function api(route: string, callback: ApiCallback): void;
+export var settings: Settings;
+export function accessToken(): Promise<string>;
+export function getUser(facebookId: string|number): Promise<User>;
+export function verifyToken(userStatus: Status): Promise<TokenStatus>;
 
 export interface ApiCallback {
     (response: any): void;
@@ -56,8 +55,6 @@ export interface User {
     name: string;
     id: string;
 }
-
-export var settings: Settings;
 
 interface Settings {
     getSecret(): string;
