@@ -28,7 +28,6 @@
   },
   "dependencies": {
     "bluebird": "^2.10.1",
-    "ls-logger": "^0.2.1",
     "request": "^2.63.0"
   }
 }
