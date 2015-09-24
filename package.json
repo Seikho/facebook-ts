@@ -1,0 +1,27 @@
+{
+    "name": "facebook-ts",
+    "version": "0.1.0",
+    "description": "Facebook API for Node",
+    "main": "src/index.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1",
+        "build": "tsc"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/seikho/facebook-ts.git"
+    },
+    "keywords": [
+        "facebook",
+        "typescript"
+    ],
+    "author": "Carl Winkler",
+    "license": "MIT",
+    "bugs": {
+        "url": "https://github.com/seikho/facebook-ts/issues"
+    },
+    "homepage": "https://github.com/seikho/facebook-ts#readme",
+    "devDependencies": {
+        "typescript": "1.6.2"
+    }
+}
