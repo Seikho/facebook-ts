@@ -1,10 +1,6 @@
 ### facebook-ts
 A facebook API for the Node.JS backend in TypeScript.  
 
-### Why TypeScript?
-To provide implicit type definitions for the API.  
-This requires 1.6 or above. 
-
 ### Installation
 ```
 npm install facebook-ts --save
